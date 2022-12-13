@@ -1,0 +1,12 @@
+.popup__wraper-input {
+  display: flex;
+  flex-direction: column;
+  row-gap: 23px;
+  margin: 22px 14px 0;
+}
+
+@media screen and (min-width: 880px) {
+  .popup__wraper-input {
+   margin: 0 28px 10px;
+  }
+}

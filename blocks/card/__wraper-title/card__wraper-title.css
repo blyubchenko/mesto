@@ -1,0 +1,9 @@
+.card__wraper-title {
+  display: flex;
+  justify-content: space-between;
+  padding-top: 21px;
+  padding-left: 22px;
+  padding-bottom: 30px;
+  padding-right: 20px;
+  align-items: center;
+}

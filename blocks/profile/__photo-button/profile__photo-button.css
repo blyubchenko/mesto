@@ -1,0 +1,23 @@
+.profile__photo-button {
+  border: 1px solid #fff;
+  background-color: rgba(0, 0, 0, 0);
+  min-width: 282px;
+  min-height: 50px;
+  color: #fff;
+  font-size: 25px;
+}
+
+.profile__photo-button:hover {
+  opacity: 0.6;
+  transition: opacity 0.2s ease-in;
+  cursor: pointer;
+}
+
+@media screen and (min-width: 880px) {
+  .profile__photo-button {
+    grid-column: 3;
+    grid-row: 1 /span 2;
+    min-width: 150px;
+  }
+}
+
