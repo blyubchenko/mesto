@@ -20,8 +20,8 @@
         <h1 class="profile__title">Жак-Ив-Кусто</h1>
         <button class="profile__edit-button" aria-label="Кнопка редактирования профиля" type="button"></button>
       </div>
-      <span class="profile__subtitle">Исследователь океана</span>
-      <button class="profile__photo-button" aria-label="Кнопка добавить фото" type="button">+</button>
+      <p class="profile__subtitle">Исследователь океана</p>
+      <button class="profile__photo-button" aria-label="Кнопка добавить фото" type="button"></button>
     </section>
 
     <section class="cards" aria-label="Галерея мест">
@@ -100,15 +100,17 @@
   </footer>
 
 <div class="popup">
-  <form class="popup__container" action="#">
-    <h2 class="popup__title">Редактировать профиль</h2>
-    <div class="popup__wraper-input">
-      <input class="popup__input" type="text" placeholder="Имя">
-      <input class="popup__input" type="text" placeholder="О себе">
-    </div>
-    <button class="popup__botton-save" type="submit">Сохранить</button>
-    <button class="popup__botton-close" type="button" aria-label="Закрыть окно"></button>
-  </form>
+  <div class="popup__wraper-form">
+    <button class="popup__button-close" type="button" aria-label="Закрыть окно"></button>
+    <form class="popup__container" name="form-edit" action="#">
+      <h2 class="popup__title">Редактировать профиль</h2>
+      <fieldset class="popup__wraper-input">
+        <input class="popup__input" type="text" id="name" name="name" placeholder="Имя" required>
+        <input class="popup__input" type="text" id="job" name="job" placeholder="О себе" required>
+      </fieldset>
+      <button class="popup__button-save" type="submit">Сохранить</button>
+    </form>
+  </div>
 </div>
 
 <script src="scripts/index.js"></script>
