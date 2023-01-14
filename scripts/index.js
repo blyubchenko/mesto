@@ -117,7 +117,7 @@ initialCards.forEach((card) => {
 //добавляем созданаю пользователем карточку
 cardPhoto.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  let card = {
+  const card = {
     link: cardLink.value,
     name: cardTitle.value,
     alt: cardTitle.value
