@@ -1,14 +1,15 @@
 .popup__wraper-input {
   display: flex;
   flex-direction: column;
-  row-gap: 30px;
   margin: 0 28px;
   border: none;
   padding: 0;
+  flex: 1;
+  margin-top: 47px;
 }
 
 @media screen and (max-width: 320px) {
   .popup__wraper-input {
-   margin: 25px 22px 0;
+   margin: 75px 22px 0;
   }
 }

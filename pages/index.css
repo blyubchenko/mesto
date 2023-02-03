@@ -41,3 +41,9 @@
 @import url(../blocks/popup/__description/popup__description.css);
 @import url(../blocks/popup/__wraper/popup__wraper.css);
 @import url(../blocks/popup/__image/popup__image.css);
+
+@import url(../blocks/popup/__input-error/popup__input-error.css);
+@import url(../blocks/popup/__input-error/_active/popup__input-error_active.css);
+@import url(../blocks/popup/__input/_type/popup__input_type_error.css);
+@import url(../blocks/popup/__button-save/_inactive/popup__button-save_inactive.css);
+

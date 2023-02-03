@@ -18,6 +18,7 @@ const cardPhoto = document.querySelector('#form-photo');
 
 const createPlace = document.querySelector('.profile__photo-button');
 const popupPhoto = document.querySelector('.popup_photo');
+const popupWraperViwer = document.querySelector('.popup__wraper')
 
 //Реализую функцию открытия модального окна
 function openPopup(item) {
@@ -44,11 +45,32 @@ profileEdit.addEventListener('click', () => {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
 });
-//Добавил обработчик закрытия модальных окон
+
+//функция закрытия модального окна по нажатию на Escape
+function closeOnEscape(popup) {
+  document.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Escape' && popup.classList.contains('popup_opened')){
+      closePopup(popup);
+     };
+  });
+};
+
+//функция закрытия модального окно при клике по оверлею
+function closeOnOverlay (popup) {
+  popup.addEventListener('click', (evt) => {
+ if (!evt.target.closest('.popup__container') && !popupWraperViwer.contains(evt.target))
+    closePopup(popup);
+  });
+};
+
+//Добавил обработчик закрытия модальных окон по крестику
 buttonsClose.forEach((item) => {
   const popup = item.closest('.popup');
   item.addEventListener('click', () => closePopup(popup))
+  closeOnOverlay (popup);
+  closeOnEscape(popup);
 });
+
 //Добавил слушателя для раедактирования профиля
 formElement.addEventListener('submit', handleFormSubmit);
 
