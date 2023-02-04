@@ -2,10 +2,10 @@
 const profileEdit = document.querySelector('.profile__edit-button');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__subtitle');
-const formElement = document.querySelector('.popup__form');
-const buttonsClose = document.querySelectorAll('.popup__button-close');
-const nameInput = formElement.querySelector('#name');
-const jobInput = formElement.querySelector('#job');
+const profileForm = document.querySelector('.popup__form');
+const closeButtons = document.querySelectorAll('.popup__button-close');
+const nameInput = profileForm.querySelector('#name');
+const jobInput = profileForm.querySelector('#job');
 const popupProfile = document.querySelector('.popup_profile');
 
 const popupViwer = document.querySelector('.popup_photo-viwer');
@@ -18,20 +18,23 @@ const cardPhoto = document.querySelector('#form-photo');
 
 const createPlace = document.querySelector('.profile__photo-button');
 const popupPhoto = document.querySelector('.popup_photo');
-const popupWraperViwer = document.querySelector('.popup__wraper')
+const popupWraperViwer = document.querySelector('.popup__wraper');
+const popups = document.querySelectorAll('.popup');
 
 //Реализую функцию открытия модального окна
 function openPopup(item) {
   item.classList.add('popup_opened');
+  document.addEventListener('keydown', closeByEscape);
 }
 
 //Реализую функцию закрытия модального окна
 function closePopup(item) {
   item.classList.remove('popup_opened');
+  document.removeEventListener('keydown', closeByEscape);
 }
 
 //Реализовал функцию редактирования профиля
-function handleFormSubmit(evt) {
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
   profileName.textContent = nameInput.value;
   profileJob.textContent = jobInput.value;
@@ -47,32 +50,27 @@ profileEdit.addEventListener('click', () => {
 });
 
 //функция закрытия модального окна по нажатию на Escape
-function closeOnEscape(popup) {
-  document.addEventListener('keydown', (evt) => {
-    if (evt.key === 'Escape' && popup.classList.contains('popup_opened')){
-      closePopup(popup);
-     };
-  });
+function closeByEscape(evt) {
+  if (evt.key === 'Escape'){
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  };
 };
 
-//функция закрытия модального окно при клике по оверлею
-function closeOnOverlay (popup) {
-  popup.addEventListener('click', (evt) => {
- if (!evt.target.closest('.popup__container') && !popupWraperViwer.contains(evt.target))
-    closePopup(popup);
+//обработчик закрытия модальных окон по крестику и оверлею
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_opened')) {
+        closePopup(popup);
+      };
+      if (evt.target.classList.contains('popup__button-close')) {
+        closePopup(popup);
+      };
   });
-};
-
-//Добавил обработчик закрытия модальных окон по крестику
-buttonsClose.forEach((item) => {
-  const popup = item.closest('.popup');
-  item.addEventListener('click', () => closePopup(popup))
-  closeOnOverlay (popup);
-  closeOnEscape(popup);
 });
 
 //Добавил слушателя для раедактирования профиля
-formElement.addEventListener('submit', handleFormSubmit);
+profileForm.addEventListener('submit', handleProfileFormSubmit);
 
 const initialCards = [
   {
@@ -109,12 +107,14 @@ const initialCards = [
 
 const cardsElement = document.querySelector('.cards');
 const cardTemplate = document.querySelector('#template').content;
+
 //функция создающая карточку
 function createCard (item) {
   const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  cardElement.querySelector('.card__image').src = item.link;
+  const cardImage = cardElement.querySelector('.card__image');
+  cardImage.src = item.link;
   cardElement.querySelector('.card__title').textContent = item.name;
-  cardElement.querySelector('.card__image').alt = item.alt;
+  cardImage.alt = item.alt;
   //добвыил функцию обработки лайка
   cardElement.querySelector('.card__like-button').addEventListener('click', function (evt) {
     evt.target.classList.toggle('card__like-button_active');
@@ -124,7 +124,7 @@ function createCard (item) {
     cardElement.remove();
   });
   //добавил функцию открытия просмотрщика фото
-  cardElement.querySelector('.card__image').addEventListener('click', () => {
+  cardImage.addEventListener('click', () => {
     openPopup(popupViwer)
     popupViwerImage.src = item.link;
     photoDescription.textContent = item.name;
