@@ -1,5 +1,7 @@
 import Card from './Card.js';
 import FormValidator from './FormValidator.js'
+import {validationConfig, initialCards} from './constans.js'
+
 //Объявляю основные переменные
 const profileEdit = document.querySelector('.profile__edit-button');
 const profileName = document.querySelector('.profile__title');
@@ -23,16 +25,13 @@ const popupPhoto = document.querySelector('.popup_photo');
 const popupWraperViwer = document.querySelector('.popup__wraper');
 const popups = document.querySelectorAll('.popup');
 
-const object = {
-  formSelector: '.popup__form',
-  inputSelector: '.popup__input',
-  submitButtonSelector: '.popup__button-save',
-  inactiveButtonClass: 'popup__button-save_inactive',
-  inputErrorClass: 'popup__input_type_error',
-  errorClass: 'popup__input-error_active'};
+const cardsElement = document.querySelector('.cards');
+const cardTemplate = '#template';
 
-const validatorProfile = new FormValidator(object, popupProfile);
-const validatorPhoto = new FormValidator(object, popupPhoto);
+const  keyCodeEsc = 'Escape';
+
+const validatorProfile = new FormValidator(validationConfig, popupProfile);
+const validatorPhoto = new FormValidator(validationConfig, popupPhoto);
 
 //Реализую функцию открытия модального окна
 function openPopup(item) {
@@ -46,6 +45,14 @@ function closePopup(item) {
   document.removeEventListener('keydown', closeByEscape);
 }
 
+//функция закрытия модального окна по нажатию на Escape
+function closeByEscape(evt) {
+  if (evt.key === keyCodeEsc) {
+    const openedPopup = document.querySelector('.popup_opened');
+    closePopup(openedPopup);
+  };
+};
+
 //Реализовал функцию редактирования профиля
 function handleProfileFormSubmit(evt) {
   evt.preventDefault();
@@ -53,6 +60,47 @@ function handleProfileFormSubmit(evt) {
   profileJob.textContent = jobInput.value;
   closePopup(popupProfile);
 }
+
+//функция открытия окна просмотрщика
+function handleClickCard(dataViwer) {
+  openPopup(popupViwer);
+  popupViwerImage.src = dataViwer.link;
+  photoDescription.textContent = dataViwer.name;
+  popupViwerImage.alt = dataViwer.alt;
+}
+
+//функция инициализации и добавления карточки
+function addCard (card, cardTemplate, handleClickCard) {
+  const newCard = new Card(card, cardTemplate, handleClickCard)
+  cardsElement.prepend(newCard.createCard());
+}
+
+//добавляем карточки из массива
+initialCards.forEach((card) => {
+  addCard(card, cardTemplate, handleClickCard);
+})
+
+//добавление созданой пользователем карточки
+cardPhoto.addEventListener('submit', (evt) => {
+  evt.preventDefault();
+  const cardData = {
+    link: cardLink.value,
+    name: cardTitle.value,
+    alt: cardTitle.value
+  }
+  addCard(cardData, cardTemplate, handleClickCard);
+  closePopup(popupPhoto);
+  evt.target.reset();
+});
+
+//обработчик закрытия модальных окон по крестику и оверлею
+popups.forEach((popup) => {
+  popup.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_opened') || evt.target.classList.contains('popup__button-close')) {
+        closePopup(popup);
+      };
+  });
+});
 
 //добавил слушателей для открытия модальных окон
 createPlace.addEventListener('click', () => {
@@ -66,86 +114,5 @@ profileEdit.addEventListener('click', () => {
   jobInput.value = profileJob.textContent;
 });
 
-//функция закрытия модального окна по нажатию на Escape
-function closeByEscape(evt) {
-  if (evt.key === 'Escape'){
-    const openedPopup = document.querySelector('.popup_opened');
-    closePopup(openedPopup);
-  };
-};
-
-//обработчик закрытия модальных окон по крестику и оверлею
-popups.forEach((popup) => {
-  popup.addEventListener('mousedown', (evt) => {
-      if (evt.target.classList.contains('popup_opened')) {
-        closePopup(popup);
-      };
-      if (evt.target.classList.contains('popup__button-close')) {
-        closePopup(popup);
-      };
-  });
-});
-
 //Добавил слушателя для раедактирования профиля
 profileForm.addEventListener('submit', handleProfileFormSubmit);
-
-const initialCards = [
-  {
-    name: 'Домбай',
-    link: 'images/card/card_1.jpg',
-    alt: 'Гора Домбай'
-  },
-  {
-    name: 'Телецкое',
-    link: 'images/card/card_2.jpg',
-    alt: 'Телецкое озеро'
-  },
-  {
-    name: 'Гамсутль',
-    link: 'images/card/card_3.jpg',
-    alt: 'Поселение Гамсутль в Дагестане'
-  },
-  {
-    name: 'Ольхон',
-    link: 'images/card/card_4.jpg',
-    alt: 'Гора Шаманка на острове Ольхон'
-  },
-  {
-    name: 'Камчатка',
-    link: 'images/card/card_5.jpg',
-    alt: 'Гейзеры на Камчатке'
-  },
-  {
-    name: 'Саяны',
-    link: 'images/card/card_6.jpg',
-    alt: 'Горы Саяны'
-  }
-];
-
-const cardsElement = document.querySelector('.cards');
-const cardTemplate = document.querySelector('#template').content;
-
-function handleClickCard(dataViwer) {
-  openPopup(popupViwer);
-  popupViwerImage.src = dataViwer.link;
-  photoDescription.textContent = dataViwer.name;
-  popupViwerImage.alt = dataViwer.alt;
-}
-//добавляем карточки из массива
-initialCards.forEach((card) => {
-  const newCard = new Card(card, cardTemplate, handleClickCard)
-  cardsElement.append(newCard.createCard());
-})
-//добавляем созданаю пользователем карточку
-cardPhoto.addEventListener('submit', (evt) => {
-  evt.preventDefault();
-  const cardData = {
-    link: cardLink.value,
-    name: cardTitle.value,
-    alt: cardTitle.value
-  }
-  const card = new Card(cardData, cardTemplate, handleClickCard)
-  cardsElement.prepend(card.createCard());
-  closePopup(popupPhoto);
-  evt.target.reset();
-});

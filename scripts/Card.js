@@ -8,7 +8,7 @@ export default class Card {
       this._handleClickCard = handleClickCard;
     }
    _getTemplate() {
-    const cardElement = this._cardTemplate.querySelector('.card').cloneNode(true);
+    const cardElement = document.querySelector(this._cardTemplate).content.querySelector('.card').cloneNode(true);
       return cardElement;
    }
    _switchLike() {
