@@ -1,3 +1,5 @@
+import Card from './Card.js';
+import FormValidator from './FormValidator.js'
 //Объявляю основные переменные
 const profileEdit = document.querySelector('.profile__edit-button');
 const profileName = document.querySelector('.profile__title');
@@ -21,6 +23,17 @@ const popupPhoto = document.querySelector('.popup_photo');
 const popupWraperViwer = document.querySelector('.popup__wraper');
 const popups = document.querySelectorAll('.popup');
 
+const object = {
+  formSelector: '.popup__form',
+  inputSelector: '.popup__input',
+  submitButtonSelector: '.popup__button-save',
+  inactiveButtonClass: 'popup__button-save_inactive',
+  inputErrorClass: 'popup__input_type_error',
+  errorClass: 'popup__input-error_active'};
+
+const validatorProfile = new FormValidator(object, popupProfile);
+const validatorPhoto = new FormValidator(object, popupPhoto);
+
 //Реализую функцию открытия модального окна
 function openPopup(item) {
   item.classList.add('popup_opened');
@@ -42,9 +55,13 @@ function handleProfileFormSubmit(evt) {
 }
 
 //добавил слушателей для открытия модальных окон
-createPlace.addEventListener('click', () => openPopup(popupPhoto));
+createPlace.addEventListener('click', () => {
+  openPopup(popupPhoto);
+  validatorPhoto.enableValidation();
+});
 profileEdit.addEventListener('click', () => {
   openPopup(popupProfile);
+  validatorProfile.enableValidation();
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
 });
@@ -108,43 +125,27 @@ const initialCards = [
 const cardsElement = document.querySelector('.cards');
 const cardTemplate = document.querySelector('#template').content;
 
-//функция создающая карточку
-function createCard (item) {
-  const cardElement = cardTemplate.querySelector('.card').cloneNode(true);
-  const cardImage = cardElement.querySelector('.card__image');
-  cardImage.src = item.link;
-  cardElement.querySelector('.card__title').textContent = item.name;
-  cardImage.alt = item.alt;
-  //добвыил функцию обработки лайка
-  cardElement.querySelector('.card__like-button').addEventListener('click', function (evt) {
-    evt.target.classList.toggle('card__like-button_active');
-  });
-  //добавил функцию удаления карточки
-  cardElement.querySelector('.card__basket-button').addEventListener('click', function () {
-    cardElement.remove();
-  });
-  //добавил функцию открытия просмотрщика фото
-  cardImage.addEventListener('click', () => {
-    openPopup(popupViwer)
-    popupViwerImage.src = item.link;
-    photoDescription.textContent = item.name;
-    popupViwerImage.alt = item.alt;
-  });
-  return cardElement;
+function handleClickCard(dataViwer) {
+  openPopup(popupViwer);
+  popupViwerImage.src = dataViwer.link;
+  photoDescription.textContent = dataViwer.name;
+  popupViwerImage.alt = dataViwer.alt;
 }
 //добавляем карточки из массива
 initialCards.forEach((card) => {
-  cardsElement.append(createCard(card));
+  const newCard = new Card(card, cardTemplate, handleClickCard)
+  cardsElement.append(newCard.createCard());
 })
 //добавляем созданаю пользователем карточку
 cardPhoto.addEventListener('submit', (evt) => {
   evt.preventDefault();
-  const card = {
+  const cardData = {
     link: cardLink.value,
     name: cardTitle.value,
     alt: cardTitle.value
   }
-  cardsElement.prepend(createCard(card));
+  const card = new Card(cardData, cardTemplate, handleClickCard)
+  cardsElement.prepend(card.createCard());
   closePopup(popupPhoto);
   evt.target.reset();
 });
