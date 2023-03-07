@@ -13,8 +13,8 @@ const jobInput = profileForm.querySelector('#job');
 const popupProfile = document.querySelector('.popup_profile');
 
 const popupViwer = document.querySelector('.popup_photo-viwer');
-const popupViwerImage = popupViwer.querySelector('.popup__image');
-const photoDescription = popupViwer.querySelector('.popup__description');
+export const popupViwerImage = popupViwer.querySelector('.popup__image');
+export const photoDescription = popupViwer.querySelector('.popup__description');
 
 const cardTitle = document.querySelector('#title');
 const cardLink = document.querySelector('#link');
@@ -23,12 +23,12 @@ const cardPhoto = document.querySelector('#form-photo');
 const createPlace = document.querySelector('.profile__photo-button');
 const popupPhoto = document.querySelector('.popup_photo');
 const popupWraperViwer = document.querySelector('.popup__wraper');
-const popups = document.querySelectorAll('.popup');
+export const popups = document.querySelectorAll('.popup');
 
 const cardsElement = document.querySelector('.cards');
 const cardTemplate = '#template';
 
-const  keyCodeEsc = 'Escape';
+export const  keyCodeEsc = 'Escape';
 
 const validatorProfile = new FormValidator(validationConfig, popupProfile);
 const validatorPhoto = new FormValidator(validationConfig, popupPhoto);
