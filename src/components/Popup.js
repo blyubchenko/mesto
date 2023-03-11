@@ -1,6 +1,5 @@
-import { keyCodeEsc, popups } from "./index.js";
-
-export default class Popup{
+import { keyCodeEsc, popups } from "../utils/constans.js"
+export class Popup{
   constructor(popupSelector) {
     this._popupSelector = document.querySelector(popupSelector);
     this._handleEscClose = this._handleEscClose.bind(this);
