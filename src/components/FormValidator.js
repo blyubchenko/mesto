@@ -32,8 +32,7 @@ export default class FormValidator {
       this._screnErrorElement(input).classList.add(this._errorClass);
     }
     _screnErrorElement(input) {
-      const inputName = input.getAttribute('name');
-      const errorElement = document.getElementById(`${inputName}-error`);
+      const errorElement = document.querySelector(`#${input.id}-error`);
       return errorElement;
     }
     _hideInputError(input) {
