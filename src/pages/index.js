@@ -49,12 +49,12 @@ function handleClickCard(dataViwer) {
   popupWithImage.open(dataViwer);
 }
 //нажатие на кнопку лайк
-function handleLikeClick(evt, cardId) {
+function handleLikeClick(evt, cardId, card) {
   if (evt.target.classList.contains("card__like-button_active")) {
     api
       .disLike(cardId)
       .then((res) => {
-        this.switchLike(res);
+        card.switchLike(res);
       })
       .catch((err) => {
         console.log(err);
@@ -63,7 +63,7 @@ function handleLikeClick(evt, cardId) {
     api
       .addLike(cardId)
       .then((res) => {
-        this.switchLike(res);
+        card.switchLike(res);
       })
       .catch((err) => {
         console.log(err);
@@ -84,7 +84,7 @@ function makeCard(cardData, userId) {
     handleLikeClick,
     handleDeleteIconClick
   );
-  return newCard;
+  return newCard.createCard();
 }
 
 //валидация форм
@@ -104,7 +104,7 @@ const cardList = new Section(
   {
     renderer: (data, userId) => {
       const item = makeCard(data, userId);
-      cardList.addItem(item.createCard());
+      cardList.addItem(item);
     },
   },
   cardsElement
@@ -120,11 +120,13 @@ const userInfo = new UserInfo({
 const confirmDeletePopup = new PopupWithSubmit(
   ".popup_confirmation",
   (cardId, element) => {
-    api.cardDelete(cardId).catch((err) => {
+    api.cardDelete(cardId).then(() => {
+      element.deleteCard();
+      confirmDeletePopup.close();
+    })
+    .catch((err) => {
       console.log(err);
     });
-    element.remove();
-    confirmDeletePopup.close();
   }
 );
 confirmDeletePopup.setEventListeners();
@@ -145,6 +147,7 @@ const avatarEditPopup = new PopupWithForm(".popup_avatar", (avatarImage) => {
 });
 avatarEdit.addEventListener("click", () => {
   avatarEditPopup.open();
+  validatorAvatar.toggleButtonSave();
 });
 avatarEditPopup.setEventListeners();
 //попап редактирования профиля
@@ -175,7 +178,7 @@ const cardAddingPopup = new PopupWithForm(".popup_photo", (cardData) => {
     .createNewCard(cardData)
     .then((cardData) => {
       const newCard = makeCard(cardData, cardData.owner._id);
-      cardList.addItem(newCard.createCard());
+      cardList.addItem(newCard);
       cardAddingPopup.close();
     })
     .catch((err) => {
@@ -186,6 +189,7 @@ const cardAddingPopup = new PopupWithForm(".popup_photo", (cardData) => {
 
 createPlace.addEventListener("click", () => {
   cardAddingPopup.open();
+  validatorPhoto.toggleButtonSave();
 });
 
 cardAddingPopup.setEventListeners();

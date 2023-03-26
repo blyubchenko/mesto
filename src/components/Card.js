@@ -30,6 +30,9 @@ export default class Card {
       this._basketBtn.remove();
     }
    }
+   deleteCard() {
+    this._element.remove();
+   }
    //проверка наличия лайка
    _presenceLike(){
      if(this._likes.some((item) => item._id === this._userId)){
@@ -38,10 +41,10 @@ export default class Card {
    }
    _setEventListeners() {
     this._likeBtn.addEventListener('click', (evt) => {
-      this._handleLikeClick(evt, this._imageId);
+      this._handleLikeClick(evt, this._imageId, this);
     });
     this._basketBtn.addEventListener('click', () => {
-      this._handleDeleteIconClick(this._imageId, this._element);
+      this._handleDeleteIconClick(this._imageId, this);
     });
     this._image.addEventListener('click', () => {
       this._handleClickCard(this._data)
