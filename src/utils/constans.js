@@ -1,9 +1,3 @@
-import card_1 from "../images/card/card_1.jpg";
-import card_2 from "../images/card/card_2.jpg";
-import card_3 from "../images/card/card_3.jpg";
-import card_4 from "../images/card/card_4.jpg";
-import card_5 from "../images/card/card_5.jpg";
-import card_6 from "../images/card/card_6.jpg";
 
 //Объявляю основные переменные
 export const profileEdit = document.querySelector(".profile__edit-button");
@@ -27,36 +21,3 @@ export const validationConfig = {
   inputErrorClass: "popup__input_type_error",
   errorClass: "popup__input-error_active",
 };
-
-export const initialCards = [
-  {
-    name: "Домбай",
-    link: card_1,
-    alt: "Гора Домбай",
-  },
-  {
-    name: "Телецкое",
-    link: card_2,
-    alt: "Телецкое озеро",
-  },
-  {
-    name: "Гамсутль",
-    link: card_3,
-    alt: "Поселение Гамсутль в Дагестане",
-  },
-  {
-    name: "Ольхон",
-    link: card_4,
-    alt: "Гора Шаманка на острове Ольхон",
-  },
-  {
-    name: "Камчатка",
-    link: card_5,
-    alt: "Гейзеры на Камчатке",
-  },
-  {
-    name: "Саяны",
-    link: card_6,
-    alt: "Горы Саяны",
-  },
-];
